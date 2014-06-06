@@ -95,7 +95,7 @@ def pipeline (X, Y, Ktype, params, selectFeat, gridSearchOn = False,  logOn = Fa
 		model = ('svm', SVM)
 		pca = KernelPCA()
 		modelName = Ktype
-		PipeParams = dict('')
+		PipeParams = dict('svm__C': params['C'], 'svm__gamma': params['gamma'])
 	else: 
 		SVM = svm.LinearSVC()
 		model = ('svm', SVM)
