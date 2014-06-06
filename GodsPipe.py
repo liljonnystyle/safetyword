@@ -28,33 +28,22 @@ def SVM(X, Y, ktype):
 		svmScores.append(clf.score(X_test, y_test))
 
 	print "scores" , svmScores
-	# get the separating hyperplane
-		w = clf.coef_[0]
-		a = -w[0] / w[1]
+		xx, yy = np.meshgrid(np.linspace(-10, 10, 500), np.linspace(-10, 10, 500))
 
-		# Plot the decision line
-		xx = np.linspace(-5, 5)
-		yy = a * xx - (clf.intercept_[0]) / w[1]
-		plt.plot(xx, yy, 'k-')
+		Z = clf.decision_function(np.c_[xx.ravel(), yy.ravel()])
+		Z = Z.reshape(xx.shape)
 
-		# Plot the "down" margin
-		b = clf.support_vectors_[0]
-		yy_down = a * xx + (b[1] - a * b[0])
-		plt.plot(xx, yy_down, 'k--', color = 'y' )
+		plt.contourf(xx, yy, Z, levels=np.linspace(Z.min(), 0, 7), cmap=pl.cm.Blues_r)
+		a = pl.contour(xx, yy, Z, levels=[0], linewidths=2, colors='red')
+		pl.contourf(xx, yy, Z, levels=[0, Z.max()], colors='orange')
 
-		# Plot the "up" margin
-		b = clf.support_vectors_[-1]
-		yy_up = a * xx + (b[1] - a * b[0])
-		plt.plot(xx, yy_up, 'k--', color = 'g')
+		colors = ['w' if i == 0 else 'k' for i in Y]
+		plt.scatter(X[:,0], X[:,1], color = colors, alpha=1.0)
 
-		# Plot the data
-		colors = ['r' if i == 0 else 'b' for i in Y]
-		plt.scatter(X[:,0], X[:,1], color = colors)
-
-		# Plot the support vectors
-		plt.scatter(clf.support_vectors_[:, 0], 
-					clf.support_vectors_[:, 1],
-	           		s=80, facecolors='none')	
+		# Plt that plot yoz. and make the xylim not shitty
+		plt.xlim([np.min(X)-5,np.max(X)+5])
+		plt.ylim([np.min(X)-5,np.max(X)+5])
+		plt.show()
 
 def logRegress(X,Y):
 
@@ -89,7 +78,7 @@ def logRegress(X,Y):
 		pl.show()
 
 
-def pipeline (X, Y, Ktype, estimator, params, selectFeat, gridSearchOn = False,  logOn = False):
+def pipeline (X, Y, Ktype, params, selectFeat, gridSearchOn = False,  logOn = False):
 
 	modelName = ' ' 
 	pipeScore = []
