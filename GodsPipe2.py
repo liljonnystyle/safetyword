@@ -81,7 +81,7 @@ def logRegress(X,Y):
 		pl.show()
 
 
-def pipeline (X, Y, Ktype, params, selectFeat, gridSearchOn = False,  logOn = False):
+def pipeline (X, Y, Ktype, params, selectFeat,  logOn = False):
 
 	modelName = ' ' 
 	pipeScore = []
@@ -99,16 +99,16 @@ def pipeline (X, Y, Ktype, params, selectFeat, gridSearchOn = False,  logOn = Fa
 		
 		#Creating dict for pipe parameters
 		if Ktype == 'poly':
-			PipeParams = dict("svm__C": params["C"], "svm__gamma": params["gamma"], "svm__d": params['d'])
+			PipeParams = {'svm__C': params['C'], 'svm__gamma': params['gamma'], 'svm__d': params['d']}
 		else:
-			PipeParams = dict("svm__C": params["C"], "svm__gamma": params["gamma"])
+			PipeParams = {'svm__C': params['C'], 'svm__gamma': params['gamma']}
 
 	else: 
 		SVM = svm.LinearSVC()
 		model = ('svm', SVM)
 		pca = KernelPCA()
 		modelName = 'Linear SVC '
-		PipeParams = dict('svm__C': params['C'])
+		PipeParams = {'svm__C': params['C']}
 
 	#log
 	if logOn:
@@ -116,6 +116,7 @@ def pipeline (X, Y, Ktype, params, selectFeat, gridSearchOn = False,  logOn = Fa
 		model = ('log' , logModel)
 		pca = decomposition.PCA()
 		modelName = 'Log Regression '
+		PipeParams = {'log__C': params['C']}
 
 	#Pipeline creation: model = tuple of model name and model object
 	if selectFeat[0]:
@@ -139,6 +140,12 @@ def pipeline (X, Y, Ktype, params, selectFeat, gridSearchOn = False,  logOn = Fa
 		pl.colorbar()
 		pl.xticks(np.arange(len(params['gamma'])), params['gamma'], rotation=45)
 		pl.yticks(np.arange(len(params['C'])), params['C'])
+
+	#plotting Log regression 
+	if modelName == 'Log Regression ':
+		pl.axvline(grid_search.best_estimator_.named_steps['pca'].n_components,
+           linestyle=':', label='n_components chosen')
+		pl.legend(prop=dict(size=12))
 
 	pl.show()
 
