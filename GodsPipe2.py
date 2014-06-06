@@ -124,8 +124,9 @@ def pipeline (X, Y, Ktype, params, selectFeat,  logOn = False):
 	else:
 		pipe = Pipeline(steps=[('pca', pca), model])
 
-	grid_search = GridSearchCV(pipe, param_grid = PipeParams, scoring = 'accuracy', cv =5, verbose = 5)
+	grid_search = GridSearchCV(pipe, param_grid = PipeParams, scoring = 'accuracy', cv =2, verbose = 5, n_jobs = 2)
 	grid_search.fit(X,Y)
+
 	print "best params: ", grid_search.best_params_
 	print "best estimator: ", grid_search.best_estimator_
 	print "scores : ", grid_search.grid_scores_
