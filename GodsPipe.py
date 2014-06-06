@@ -14,7 +14,6 @@ from sklearn.decomposition import PCA
 
 #params must be dict
 
-
 def pipeline (X, Y, Ktype, estimator, params, selectFeat, gridSearchOn = False,  logOn = False):
 
 	modelName = ' ' 
@@ -67,4 +66,19 @@ def pipeline (X, Y, Ktype, estimator, params, selectFeat, gridSearchOn = False, 
 	if gridSearchOn:
 		grid_search = GridSearchCV(pipe, param_grid = params, scoring = 'accuracy', cv =5, verbose = 5)
 		grid_search.fit(X,Y)
-		print "best params", grid_search.best_params_
+		print "best params: ", grid_search.best_params_
+		print "best estimator: ", grid_search.best_estimator_
+		print "scores : ", grid_search.grid_scores_
+
+		#plotting gridsearch
+		if modelName == 'RBF'
+			pl.figure(figsize=(8, 6))
+			pl.subplots_adjust(left=0.05, right=0.95, bottom=0.15, top=0.95)
+			pl.imshow(scores, interpolation='nearest', cmap=pl.cm.spectral)
+			pl.xlabel('gamma')
+			pl.ylabel('C')
+			pl.colorbar()
+			pl.xticks(np.arange(len(params['gamma'])), params['gamma'], rotation=45)
+			pl.yticks(np.arange(len(params['C'])), params['C'])
+
+		pl.show()
