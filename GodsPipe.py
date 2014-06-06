@@ -57,6 +57,8 @@ def logRegress(X,Y):
 		
 		print "Scores" , scores
 
+		x_min, x_max = X[:, 0].min() - .5, X[:, 0].max() + .5
+		y_min, y_max = X[:, 1].min() - .5, X[:, 1].max() + .5
 		xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h))
 		Z = logreg.predict(np.c_[xx.ravel(), yy.ravel()])
 
@@ -136,7 +138,7 @@ def pipeline (X, Y, Ktype, params, selectFeat, gridSearchOn = False,  logOn = Fa
 		print "scores : ", grid_search.grid_scores_
 
 		#plotting gridsearch
-		if modelName == 'RBF':
+		if modelName == 'rbf':
 			pl.figure(figsize=(8, 6))
 			pl.subplots_adjust(left=0.05, right=0.95, bottom=0.15, top=0.95)
 			pl.imshow(scores, interpolation='nearest', cmap=pl.cm.spectral)
