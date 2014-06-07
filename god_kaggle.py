@@ -1,4 +1,6 @@
 
+from GodsPipe import pipeline
+
 df = pd.read_csv('data/training.csv')
 df = df.set_index('EventId')
 for i in xrange(30):
